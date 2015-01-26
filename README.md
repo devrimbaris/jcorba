@@ -1,6 +1,6 @@
 # jcorba
 
-A Clojure library designed to utilize [JSoup](http://www.jsoup.org) 
+A Clojure library designed to utilize [JSoup](http://www.jsoup.org).
 
 ## Usage
 
