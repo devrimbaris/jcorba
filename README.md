@@ -4,7 +4,7 @@ A Clojure library designed to utilize [JSoup](http://www.jsoup.org)
 
 ## Usage
 
-It can be used as a template.
+Just copy and paste the project.clj and core.clj to and start testing. It can be used as a template.
 
 ## License
 
