@@ -22,21 +22,21 @@
 (get-mp3-url "grandma")
 
 
+(defn get-aa-teaser []
+  (let [url  (str  "http://www.aa.com.tr/tr" )
+        working-set (if-let [doc (try  (.get (Jsoup/connect url)) (catch Exception e1 nil))]
+                      (let [teasers  (.select doc "ol.teasers li h3 a")]
+                        teasers
+                        ))]
+                                        
+    (map #(.attr (.select % "a") "href") working-set)
+    ))
+
+
+(get-aa-teaser)
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+;(.getElementsByTag (second   (.getAllElements (first mp3-url))) "a")
+                                        ;(.select (second   (.getAllElements (first mp3-url))) "a")
