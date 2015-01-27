@@ -30,6 +30,7 @@
                         ))]
                                         
     (map #(assoc {}
+            :source "aa"
             :url (str url (.attr (.select % "a") "href"))
             :title (.html (.select % "a") )
             :description ""
@@ -46,6 +47,7 @@
                       (.select  doc "#last-news li"))]
     working-set
     (map #(assoc {}
+            :source "cihan"
             :url (str url (.attr (.select % "a") "href"))
             :title (.attr (.select % "a") "title")
             
@@ -59,34 +61,19 @@
   (let [url  (str  "http://www.iha.com.tr/rss.php")
         working-set (if-let [doc (try  (.get (Jsoup/connect url) ) (catch org.jsoup.HttpStatusException e1  (.getStatusCode e1)))]
                       doc)
-        items (.select working-set "link")]
-    (map #(assoc {}
-            :url (.html (.select % "link")) 
-            :title (.html (.select % "title") )
-            :description (.html (.select % "description") )
-            :category (.html (.select % "category") )
-            ) items)
-    items
-    
-    ))
-
-
-(defn get-iha-rss []
-  (let [url  (str  "http://www.iha.com.tr/rss.php")
-        working-set (if-let [doc (try  (.get (Jsoup/connect url)) (catch org.jsoup.HttpStatusException e1  (.getStatusCode e1)))]
-                      doc)
         items (.select working-set "item")]
     (map #(assoc {}
-            :url (.select % ":contains(tehdit)") 
+            :source "iha"
             :title (.html (.select % "title") )
             :description (.html (.select % "description") )
             :category (.html (.select % "category") )
             ) items)
-    working-set
     ))
 
-
 (get-iha-rss)
+
+
+(count (concat  (get-cihan-teasers) (get-aa-teasers) (get-iha-rss)))
 
 
 
