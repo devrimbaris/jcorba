@@ -77,33 +77,21 @@
         items (.select working-set "item")]
     (map #(assoc {}
             :source "iha"
-            :title (.html (.select % "title") )
+            :title (second (re-find #"\[CDATA\[(.*)!\]]"  (.html (.select % "title") )))
             :description (.html (.select % "description") )
             :category (.html (.select % "category") )
             ) items)
     ))
 
 
+
 (defn fetch-all-news []
   (concat  (get-cihan-teasers) (get-aa-rss) (get-iha-rss)))
 
-(fetch-all-news)
 
-(filter #(re-find #"(?(i)kobani" %) (fetch-all-news))
+(map #(select-keys % [:title :description]) (fetch-all-news))
 
+(remove nil? (map #(if (re-find #"(?i)borsa" (:title %)) (:title %))
 
-()
+                  (fetch-all-news)))
 
-(.contains "dedeede" "d1e")
-
-(filter #(re-find #"(?i)alo" %)
-          ["Lion" "Zebra" "Buffalo" "Antelope"])
-
-
-
-;#last-news ul.last-news-list
-
-
-
-;(.getElementsByTag (second   (.getAllElements (first mp3-url))) "a")
-                                        ;(.select (second   (.getAllElements (first mp3-url))) "a")
