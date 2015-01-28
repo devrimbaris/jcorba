@@ -1,5 +1,6 @@
 (ns jcorba.core
   (:import [org.jsoup Jsoup]
+           [java.lang String]
            [org.jsoup.nodes
             Attribute Attributes Comment DataNode
             Document Element TextNode]))
@@ -37,7 +38,19 @@
             ) working-set)
     ))
 
-(get-aa-teasers)
+(defn get-aa-rss []
+  (let [url  (str  "http://www.aa.com.tr/rss/ajansguncel.xml")
+        working-set (if-let [doc (try  (.get (Jsoup/connect url) ) (catch org.jsoup.HttpStatusException e1  (.getStatusCode e1)))]
+                      doc)
+        items (.select working-set "item")]
+    (map #(assoc {}
+            :source "aa"
+            :url (.html (.select % "link") )
+            :title (.html (.select % "title") )
+            :description (.html (.select % "description") )
+            :category (.html (.select % "category") )
+            ) items)
+    ))
 
 
 (defn get-cihan-teasers []
@@ -54,7 +67,7 @@
             ) working-set)
     ))
 
-(get-cihan-teasers)
+
 
 
 (defn get-iha-rss []
@@ -70,12 +83,21 @@
             ) items)
     ))
 
-(get-iha-rss)
+
+(defn fetch-all-news []
+  (concat  (get-cihan-teasers) (get-aa-rss) (get-iha-rss)))
+
+(fetch-all-news)
+
+(filter #(re-find #"(?(i)kobani" %) (fetch-all-news))
 
 
-(count (concat  (get-cihan-teasers) (get-aa-teasers) (get-iha-rss)))
+()
 
+(.contains "dedeede" "d1e")
 
+(filter #(re-find #"(?i)alo" %)
+          ["Lion" "Zebra" "Buffalo" "Antelope"])
 
 
 
